@@ -58,7 +58,27 @@ const userController = {
     },
 
     deleteUser(req, res) {
-
+        User.findOneAndRemove({ _id: req.params.userId })
+        .then((user) =>
+          !user
+            ? res.status(404).json({ message: 'No users exist' })
+            : Account.findOneAndUpdate(
+                { users: req.params.userId },
+                { $pull: { users: req.params.userId } },
+                { new: true }
+              )
+        )
+        .then((account) =>
+          !account
+            ? res.status(404).json({
+                message: 'The user is deleted, but no user is found',
+              })
+            : res.json({ message: 'User has been successfully deleted' })
+        )
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json(err);
+        });
     },
 
     addFriend(req, res) {

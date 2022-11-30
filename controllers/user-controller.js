@@ -41,7 +41,20 @@ const userController = {
     },
 
     updateUser(req, res) {
-
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $set: req.body },
+            { runValidators: true, new: true }
+          )
+            .then((video) =>
+              !video
+                ? res.status(404).json({ message: 'There was no user with that ID!' })
+                : res.json(video)
+            )
+            .catch((err) => {
+              console.log(err);
+              res.status(500).json(err);
+            });
     },
 
     deleteUser(req, res) {

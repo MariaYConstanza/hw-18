@@ -18,7 +18,20 @@ const userController = {
     },
 
     getSingleUser(req, res) {
-        
+        User.findOne({ _id: req.params.UserId })
+        .select('-__v')
+        .then(async (user) =>
+          !user
+            ? res.status(404).json({ message: 'No user is found with that ID' })
+            : res.json({
+                user,
+                account: await account(req.params.userId),
+              })
+        )
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
     },
 
     createUser(req, res) {

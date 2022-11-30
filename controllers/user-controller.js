@@ -1,7 +1,9 @@
 const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
+// Users account control *** CRUD
 const userController = {
+    // user account
     getUsers(req, res) {
         User.find()
         .then(async (users) => {
@@ -17,8 +19,10 @@ const userController = {
         }); 
     },
 
+    // user pulling/finding an account
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.UserId })
+        // come back to check if it works
         .populate('friend')
         .then(async (user) =>
           !user
@@ -34,12 +38,14 @@ const userController = {
         });
     },
 
+    // creating a user account
     createUser(req, res) {
         User.create(req.body)
         .then((user) => res.json(user))
         .catch((err) => res.status(500).json(err));
     },
 
+    // user updating account 
     updateUser(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
@@ -57,6 +63,7 @@ const userController = {
             });
     },
 
+    // user deleting an account
     deleteUser(req, res) {
         User.findOneAndRemove({ _id: req.params.userId })
         .then((user) =>
@@ -81,6 +88,7 @@ const userController = {
         });
     },
 
+    // user adding a friend
     addFriend(req, res) {
         console.log('You just added a friend!');
         console.log(req.body);
@@ -99,6 +107,7 @@ const userController = {
           .catch((err) => res.status(500).json(err));
     },
 
+    // user removing a friend
     removeFriend(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },

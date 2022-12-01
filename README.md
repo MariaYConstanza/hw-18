@@ -22,4 +22,4 @@ As a developer creating a databse that can apply full CRUD to a social network i
 N/A
 
 ## Licenses
-Copyright  All Rights Reserved
+Copyright https://github.com/MariaYConstanza/social-networking All Rights Reserved
